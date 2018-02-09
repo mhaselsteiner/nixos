@@ -16,21 +16,77 @@
 
   networking.hostName = "haselbox"; # Define your hostname.
   networking.networkmanager.enable = true;
+  
+  powerManagement.enable = true;
+
+
+
 
   # Select internationalisation properties.
   i18n = {
     consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "de";
-    defaultLocale = "de_AT.UTF-8";
+    consoleKeyMap = "uk";
+    defaultLocale = "en_GB.UTF-8";
   };
 
   # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "Europe/Vienna";
+ # Manual upgrades
+  system.autoUpgrade.enable = false; 
+
+
+  nixpkgs.config = {
+    allowUnfree = true; #allow unfree software like skype
+    firefox = {
+    #enableAdobeFlash = true;
+      enableGnomeExtensions = true;
+      enableAdobeReader  = true;
+      enableVLC = true;};
+#    allowBroken = true; 
+
+    gnome3 = {
+      gnome-keyring.enable = true;
+      at-spi2-core.enable = true;
+      #gnome-user-share.enable = true;
+      gvfs.enable = true;
+      };
+
+};
+
+
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
+
+
   environment.systemPackages = with pkgs; [
-    gitAndTools.gitFull thunderbird wget vim firefox
+#system tools
+    bash
+    zip
+    unzip
+    gitAndTools.gitFull
+    wget 
+    vim 
+    gparted
+    qpdfview
+
+#programs
+    firefox
+    libreoffice
+    inkscape
+    skype
+    spotify
+    jetbrains.pycharm-community
+    sublime3
+    tor
+
+#programming: compiler, interpreter, IDEs
+    android-studio
+    gcc
+    netbeans
+    (python35.withPackages(ps: with ps; [numpy toolz jupyter pygame]))
+
+    
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -42,7 +98,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -52,24 +108,37 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
+  # getting 32bit programs run like 64bit
+  hardware.opengl.driSupport32Bit = true;
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.layout = "de";
+  services.xserver.layout = "us,de";
   services.xserver.xkbOptions = "eurosign:e";
 
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
 
-  # Enable the KDE Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
+  # Enable the gnome Desktop Environment.
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome3.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.lena = {
+    extraGroups = [ "wheel" "networkmanager"] ;
     isNormalUser = true;
     uid = 1000;
   };
+  environment.gnome3.excludePackages = with pkgs.gnome3; [
+    epiphany
+    gnome-music
+    gnome-photos
+    totem
+    accerciser
+  ];
+
+ 
+
+
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
