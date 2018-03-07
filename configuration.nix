@@ -38,7 +38,7 @@
   nixpkgs.config = {
     allowUnfree = true; #allow unfree software like skype
     firefox = {
-    #enableAdobeFlash = true;
+      enableAdobeFlash = true;
       enableGnomeExtensions = true;
       enableAdobeReader  = true;
       enableVLC = true;};
