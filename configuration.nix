@@ -51,7 +51,17 @@
       gvfs.enable = true;
       };
 
-};
+    packageOverrides = super: let self = super.pkgs; in {
+      spotify = super.spotify.overrideAttrs (o: rec {
+        name = "spotify-${version}";
+        version = "1.0.80.480.g51b03ac3-13";
+        src = self.fetchurl {
+          url = "https://repository-origin.spotify.com/pool/non-free/s/spotify-client/spotify-client_${version}_amd64.deb";
+          sha256 = "e32f4816ae79dbfa0c14086e76df3bc83d526402aac1dbba534127fc00fe50ea";
+        };
+      });
+    };
+  };
 
 
 
