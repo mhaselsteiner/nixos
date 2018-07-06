@@ -69,6 +69,8 @@
     vim 
     gparted
     qpdfview
+    aspellDicts.de # dictionary
+    aspellDicts.en
 
 #programs
     firefox
@@ -84,7 +86,7 @@
     android-studio
     gcc
     netbeans
-    (python35.withPackages(ps: with ps; [numpy toolz jupyter pygame]))
+    (python35.withPackages(ps: with ps; [numpy toolz jupyter pygame yapf pandas]))
     adb-sync #to control android devise frome pc via usb (Debuging, Fastboot)
     adbfs-rootless#	Mount Android phones on Linux with adb, no root required
     #androidsdk should be in adroid studio	
