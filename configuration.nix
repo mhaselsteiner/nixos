@@ -81,9 +81,10 @@
     qpdfview
     aspellDicts.de # dictionary
     aspellDicts.en
+    htop
 
 #programs
-    firefox
+    firefox-bin
     libreoffice
     inkscape
     skype
@@ -94,9 +95,8 @@
 
 #programming: compiler, interpreter, IDEs
     android-studio
-    gcc
     netbeans
-    (python35.withPackages(ps: with ps; [numpy toolz jupyter pygame yapf pandas]))
+    (python3.withPackages(ps: with ps; [numpy django toolz jupyter pygame yapf pandas]))
     adb-sync #to control android devise frome pc via usb (Debuging, Fastboot)
     adbfs-rootless#	Mount Android phones on Linux with adb, no root required
     #androidsdk should be in adroid studio	
