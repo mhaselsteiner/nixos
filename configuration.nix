@@ -8,9 +8,11 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./shell.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
+  boot.loader.grub.device="/dev/nvme0n1";
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -18,16 +20,6 @@
   networking.networkmanager.enable = true;
   
   powerManagement.enable = true;
-
-
-
-
-  # Select internationalisation properties.
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "uk";
-    defaultLocale = "en_GB.UTF-8";
-  };
 
   # Set your time zone.
   time.timeZone = "Europe/Vienna";
@@ -37,11 +29,6 @@
 
   nixpkgs.config = {
     allowUnfree = true; #allow unfree software like skype
-    firefox = {
-      enableAdobeFlash = true;
-      enableGnomeExtensions = true;
-      enableAdobeReader  = true;
-      enableVLC = true;};
 #    allowBroken = true; 
 
     gnome3 = {
@@ -51,16 +38,16 @@
       gvfs.enable = true;
       };
 
-    packageOverrides = super: let self = super.pkgs; in {
-      spotify = super.spotify.overrideAttrs (o: rec {
-        name = "spotify-${version}";
-        version = "1.0.80.480.g51b03ac3-13";
-        src = self.fetchurl {
-          url = "https://repository-origin.spotify.com/pool/non-free/s/spotify-client/spotify-client_${version}_amd64.deb";
-          sha256 = "e32f4816ae79dbfa0c14086e76df3bc83d526402aac1dbba534127fc00fe50ea";
-        };
-      });
-    };
+    #packageOverrides = super: let self = super.pkgs; in {
+    #  spotify = super.spotify.overrideAttrs (o: rec {
+    #    name = "spotify-${version}";
+    #    version = "1.0.80.480.g51b03ac3-13";
+    #    src = self.fetchurl {
+    #      url = "https://repository-origin.spotify.com/pool/non-free/s/spotify-client/spotify-client_${version}_amd64.deb";
+    #      sha256 = "e32f4816ae79dbfa0c14086e76df3bc83d526402aac1dbba534127fc00fe50ea";
+    #   };
+    #  });
+    #};
   };
 
 
@@ -81,11 +68,15 @@
     qpdfview
     aspellDicts.de # dictionary
     aspellDicts.en
+    touchegg #Macro binding for touch surfaces
+
 
 #programs
-    firefox
+    
+    chromium
     libreoffice
     inkscape
+    python36Packages.mps-youtube #Terminal based YouTube player and downloader
     skype
     spotify
     jetbrains.pycharm-community
@@ -93,12 +84,12 @@
     tor
 
 #programming: compiler, interpreter, IDEs
-    android-studio
+    #android-studio
     gcc
     netbeans
-    (python35.withPackages(ps: with ps; [numpy toolz jupyter pygame yapf pandas]))
-    adb-sync #to control android devise frome pc via usb (Debuging, Fastboot)
-    adbfs-rootless#	Mount Android phones on Linux with adb, no root required
+    #(python35.withPackages(ps: with ps; [numpy toolz jupyter pygame yapf pandas]))
+    #adb-sync #to control android devise frome pc via usb (Debuging, Fastboot)
+    #adbfs-rootless#	Mount Android phones on Linux with adb, no root required
     #androidsdk should be in adroid studio	
     
   ];
@@ -126,7 +117,7 @@
   hardware.opengl.driSupport32Bit = true;
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.layout = "us,de";
+  services.xserver.layout = "gb,de";
   services.xserver.xkbOptions = "eurosign:e";
 
   # Enable touchpad support.
@@ -158,6 +149,6 @@
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "17.09"; # Did you read the comment?
+  system.stateVersion = "18.09"; # Did you read the comment?
 
 }
