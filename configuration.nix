@@ -72,16 +72,17 @@
 
 
 #programs
-    
+    arduino 
     chromium
     libreoffice
     inkscape
+    krita #  A free and open source painting application (pressure sensitive)
     python36Packages.mps-youtube #Terminal based YouTube player and downloader
     skype
     spotify
     jetbrains.pycharm-community
     sublime3
-    tor
+    torbrowser
 
 #programming: compiler, interpreter, IDEs
     #android-studio
