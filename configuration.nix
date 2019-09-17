@@ -12,7 +12,8 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.grub.device="/dev/nvme0n1";
+  boot.loader.grub.device = "/dev/nvme0n1";
+  boot.loader.grub.configurationLimit = 5;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -64,7 +65,7 @@
     gitAndTools.gitFull
     wget 
     vim 
-    gparted
+    gparted # does not work always
     qpdfview
     aspellDicts.de # dictionary
     aspellDicts.en
@@ -88,7 +89,7 @@
     #android-studio
     gcc
     netbeans
-    #(python35.withPackages(ps: with ps; [numpy toolz jupyter pygame yapf pandas]))
+    (python3.withPackages(ps: with ps; [numpy pytest seaborn pylint jupyter pygame yapf pandas scikitlearn]))
     #adb-sync #to control android devise frome pc via usb (Debuging, Fastboot)
     #adbfs-rootless#	Mount Android phones on Linux with adb, no root required
     #androidsdk should be in adroid studio	
