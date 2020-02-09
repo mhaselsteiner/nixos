@@ -61,16 +61,16 @@
   environment.systemPackages = with pkgs; [
 #system tools
     bash
-    zip
-    unzip
     gitAndTools.gitFull
-    wget 
-    vim 
     gparted # does not work always
     qpdfview
     aspellDicts.de # dictionary
     aspellDicts.en
     touchegg #Macro binding for touch surfaces
+    unzip
+    vim 
+    wget 
+    zip
 
 
 #programs
