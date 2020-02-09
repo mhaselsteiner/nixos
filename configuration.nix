@@ -31,6 +31,7 @@
   nixpkgs.config = {
     allowUnfree = true; #allow unfree software like skype
 #    allowBroken = true; 
+    chromium.enableWideVine = true;
 
     gnome3 = {
       gnome-keyring.enable = true;
