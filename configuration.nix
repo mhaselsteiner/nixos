@@ -82,7 +82,7 @@
     inkscape
     gqview # lightweight png viewer
     krita #  A free and open source painting application (pressure sensitive)
-    python36Packages.mps-youtube #Terminal based YouTube player and downloader
+    python3Packages.mps-youtube #Terminal based YouTube player and downloader
     skype
     spotify
     jetbrains.pycharm-community
