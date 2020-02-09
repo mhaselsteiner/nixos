@@ -93,7 +93,7 @@
     #android-studio
     gcc
     netbeans
-    (python3.withPackages(ps: with ps; [numpy pytest seaborn pylint jupyter pygame yapf pandas scikitlearn]))
+    (python3.withPackages(ps: with ps; [numpy pytest matplotlib protobuf seaborn pylint jupyter pygame yapf pandas scikitlearn]))
     #adb-sync #to control android devise frome pc via usb (Debuging, Fastboot)
     #adbfs-rootless#	Mount Android phones on Linux with adb, no root required
     #androidsdk should be in adroid studio	
