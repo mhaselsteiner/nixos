@@ -61,11 +61,13 @@
   environment.systemPackages = with pkgs; [
 #system tools
     bash
+    enchant
     gitAndTools.gitFull
     gparted # does not work always
+    hunspell
+    hunspellDicts.de-at
+    hunspellDicts.en-gb-ize
     qpdfview
-    aspellDicts.de # dictionary
-    aspellDicts.en
     touchegg #Macro binding for touch surfaces
     unzip
     vim 
