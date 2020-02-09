@@ -135,6 +135,11 @@
     isNormalUser = true;
     uid = 1000;
   };
+  users.extraUsers.sepp = {
+    extraGroups = [ "networkmanager"] ;
+    isNormalUser = true;
+    uid = 1001;
+  };
   environment.gnome3.excludePackages = with pkgs.gnome3; [
     epiphany
     gnome-music
