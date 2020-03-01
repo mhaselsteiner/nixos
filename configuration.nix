@@ -64,6 +64,7 @@
     enchant
     gitAndTools.gitFull
     gparted # does not work always
+    htop
     hunspell
     hunspellDicts.de-at
     hunspellDicts.en-gb-ize
