@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 
 {
   imports =
@@ -19,6 +19,7 @@
 
   networking.hostName = "haselbox"; # Define your hostname.
   networking.networkmanager.enable = true;
+  networking.networkmanager.insertNameservers = [ "8.8.8.8" ]; #dns
   
   powerManagement.enable = true;
 
@@ -26,6 +27,45 @@
   time.timeZone = "Europe/Vienna";
  # Manual upgrades
   system.autoUpgrade.enable = false; 
+
+  nixpkgs.overlays = [
+    (self: super: with self; {
+    python27 = super.python27.override pythonOverrides;
+    python27Packages = super.recurseIntoAttrs (python27.pkgs);
+    python3Packages = super.recurseIntoAttrs (python3.pkgs);
+    python = python27;
+    pythonPackages = python27Packages;
+
+    python3 = super.python3.override pythonOverrides;
+    pythonOverrides = {
+      packageOverrides = python-self: python-super: {
+          windlamp = python-super.buildPythonPackage rec {
+            name = "windlamp-${version}";
+            version = "0.1";
+            src = fetchGit {
+              url = "git@github.com:mhaselsteiner/windlamp.git";
+              rev = "7d105e1e9ddcd8f249a8251c7d77726de794bde5";
+            };
+            propagatedBuildInputs = with python-self; [
+	      requests
+              pandas
+            ];
+            prePatch = with python-self; ''
+            '';
+            doCheck = false;
+          };
+          };
+          };
+		
+          })
+	];
+  nix.nixPath =
+    # Prepend default nixPath values.
+    options.nix.nixPath.default ++ 
+    # Append our nixpkgs-overlays.
+    [ "nixpkgs-overlays=/etc/nixos/overlays-compat/" ]
+  ;
+
 
 
   nixpkgs.config = {
@@ -50,6 +90,7 @@
     #   };
     #  });
     #};
+
   };
 
 
@@ -61,6 +102,7 @@
   environment.systemPackages = with pkgs; [
 #system tools
     bash
+    cron
     enchant
     gitAndTools.gitFull
     gparted # does not work always
@@ -75,20 +117,21 @@
     wget 
     zip
 
-
 #programs
     arduino 
     chromium
     libreoffice
     inkscape
+    gnome3.evolution #  Personal information management application that provides integrated mail, calendaring and address book functionality
+    gnome3.adwaita-icon-theme
     gqview # lightweight png viewer
     krita #  A free and open source painting application (pressure sensitive)
-    python3Packages.mps-youtube #Terminal based YouTube player and downloader
     skype
     spotify
     jetbrains.pycharm-community
     sublime3
     torbrowser
+    zoom-us #chattool
 
 #programming: compiler, interpreter, IDEs
     #android-studio
@@ -120,6 +163,7 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
+  services.printing.drivers = with pkgs; [ gutenprint gutenprintBin hplipWithPlugin ]; 
   # getting 32bit programs run like 64bit
   hardware.opengl.driSupport32Bit = true;
   # Enable the X11 windowing system.
@@ -133,6 +177,13 @@
   # Enable the gnome Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome3.enable = true;
+    # Enable cron service
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+      "* * * * *      root    nix-shell -p  python3Packages.windlamp --run get_bremen_data >> /home/lena/Programming/PycharmProjects/windlamp/get_data.log 2>&1"
+    ];
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.lena = {

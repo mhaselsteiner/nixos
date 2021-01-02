@@ -24,11 +24,9 @@
 
 
   # Select internationalisation properties.
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "uk";
-    defaultLocale = "en_GB.UTF-8";
-  };
+   #console.font = "Lat2-Terminus16";
+   #console.keyMap = "uk";
+   #i18n.defaultLocale = "en_GB.UTF-8";
 
   programs.bash.enableCompletion = true;
 
