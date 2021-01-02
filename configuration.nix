@@ -28,6 +28,13 @@
  # Manual upgrades
   system.autoUpgrade.enable = false; 
 
+#  nix.nixPath =
+#    # Prepend default nixPath values.
+#    options.nix.nixPath.default ++ 
+#    # Append our nixpkgs-overlays.
+#    [ "nixpkgs-overlays=/etc/nixos/overlays-compat/" ]
+#  ;
+
   nixpkgs.overlays = [
     (self: super: with self; {
     python27 = super.python27.override pythonOverrides;
@@ -59,13 +66,6 @@
 		
           })
 	];
-  nix.nixPath =
-    # Prepend default nixPath values.
-    options.nix.nixPath.default ++ 
-    # Append our nixpkgs-overlays.
-    [ "nixpkgs-overlays=/etc/nixos/overlays-compat/" ]
-  ;
-
 
 
   nixpkgs.config = {
@@ -79,20 +79,7 @@
       #gnome-user-share.enable = true;
       gvfs.enable = true;
       };
-
-    #packageOverrides = super: let self = super.pkgs; in {
-    #  spotify = super.spotify.overrideAttrs (o: rec {
-    #    name = "spotify-${version}";
-    #    version = "1.0.80.480.g51b03ac3-13";
-    #    src = self.fetchurl {
-    #      url = "https://repository-origin.spotify.com/pool/non-free/s/spotify-client/spotify-client_${version}_amd64.deb";
-    #      sha256 = "e32f4816ae79dbfa0c14086e76df3bc83d526402aac1dbba534127fc00fe50ea";
-    #   };
-    #  });
-    #};
-
   };
-
 
 
   # List packages installed in system profile. To search by name, run:
@@ -144,6 +131,7 @@
     
   ];
 
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.bash.enableCompletion = true;
@@ -173,7 +161,6 @@
 
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
-
   # Enable the gnome Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome3.enable = true;
@@ -181,7 +168,7 @@
   services.cron = {
     enable = true;
     systemCronJobs = [
-      "* * * * *      root    nix-shell -p  python3Packages.windlamp --run get_bremen_data >> /home/lena/Programming/PycharmProjects/windlamp/get_data.log 2>&1"
+      "* * * * *      root    ${pkgs.python3Packages.windlamp}/bin/get_bremen_data >> /home/lena/Programming/PycharmProjects/windlamp/get_data.log 2>&1"
     ];
   };
 
