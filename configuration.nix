@@ -117,6 +117,7 @@
     spotify
     jetbrains.pycharm-community
     sublime3
+    sqlitebrowser
     torbrowser
     zoom-us #chattool
 
