@@ -51,7 +51,7 @@
             version = "0.1";
             src = fetchGit {
               url = "git@github.com:mhaselsteiner/windlamp.git";
-              rev = "7d105e1e9ddcd8f249a8251c7d77726de794bde5";
+              rev = "684fef3e12a6c318847f30500b08a493eb5f7cc3";
             };
             propagatedBuildInputs = with python-self; [
 	      requests
