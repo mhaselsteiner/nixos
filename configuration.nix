@@ -153,8 +153,22 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
   services.printing.drivers = with pkgs; [ gutenprint gutenprintBin hplipWithPlugin ]; 
-  # getting 32bit programs run like 64bit
-  hardware.opengl.driSupport32Bit = true;
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+  hardware.enableAllFirmware = true;
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel         # LIBVA_DRIVER_NAME=i963 (older but works better for Firefox/Chromium)
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.layout = "gb,de";
@@ -165,6 +179,8 @@
   # Enable the gnome Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome3.enable = true;
+
+  services.xserver.videoDrivers = [ "intel" "modesetting" ];
     # Enable cron service
   services.cron = {
     enable = true;
