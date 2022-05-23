@@ -12,6 +12,7 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
+  boot.supportedFilesystems = [ "ntfs" ];
   boot.loader.grub.device = "/dev/nvme0n1";
   boot.loader.grub.configurationLimit = 5;
   boot.loader.systemd-boot.enable = true;
@@ -73,7 +74,7 @@
 #    allowBroken = true; 
     chromium.enableWideVine = true;
 
-    gnome3 = {
+    gnome = {
       gnome-keyring.enable = true;
       at-spi2-core.enable = true;
       #gnome-user-share.enable = true;
@@ -97,6 +98,9 @@
     hunspell
     hunspellDicts.de-at
     hunspellDicts.en-gb-ize
+    intel-gpu-tools # For intel_gpu_top
+    ntfs3g
+    nfs-utils
     qpdfview
     touchegg #Macro binding for touch surfaces
     unzip
@@ -109,16 +113,22 @@
     chromium
     libreoffice
     inkscape
-    gnome3.evolution #  Personal information management application that provides integrated mail, calendaring and address book functionality
-    gnome3.adwaita-icon-theme
+    evolution #  Personal information management application that provides integrated mail, calendaring and address book functionality
+    gnome.adwaita-icon-theme
     gqview # lightweight png viewer
+    hue-cli # cli for philipps hue lamp
     krita #  A free and open source painting application (pressure sensitive)
+    okular # taking notes on pdf
+    mpv
+    vlc
+    ktorrent
     skype
     spotify
     jetbrains.pycharm-community
+    slack
     sublime3
     sqlitebrowser
-    torbrowser
+    #torbrowser
     zoom-us #chattool
 
 #programming: compiler, interpreter, IDEs
@@ -138,6 +148,7 @@
   programs.bash.enableCompletion = true;
   programs.mtr.enable = true;
   programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
+  programs.steam.enable = true;
 
   # List services that you want to enable:
 
@@ -178,14 +189,14 @@
   services.xserver.libinput.enable = true;
   # Enable the gnome Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome3.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
 
   services.xserver.videoDrivers = [ "intel" "modesetting" ];
     # Enable cron service
   services.cron = {
     enable = true;
     systemCronJobs = [
-      "* * * * *      root    ${pkgs.python3Packages.windlamp}/bin/get_bremen_data >> /home/lena/Programming/PycharmProjects/windlamp/get_data.log 2>&1"
+      "1 * * * *      root    ${pkgs.python3Packages.windlamp}/bin/get_bremen_data >> /home/lena/Programming/PycharmProjects/windlamp/get_data.log 2>&1"
     ];
   };
 
@@ -196,11 +207,11 @@
     uid = 1000;
   };
   users.extraUsers.sepp = {
-    extraGroups = [ "networkmanager"] ;
+    extraGroups = [ "wheel" "networkmanager"] ;
     isNormalUser = true;
     uid = 1001;
   };
-  environment.gnome3.excludePackages = with pkgs.gnome3; [
+  environment.gnome.excludePackages = with pkgs.gnome; [
     epiphany
     gnome-music
     gnome-photos
@@ -208,7 +219,7 @@
     accerciser
   ];
 
- 
+ #boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
 
 
 
