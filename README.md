@@ -3,7 +3,7 @@
 The configuration is set-up for a private notebook
 
 ## Hardware
-Samsung notebook 900X
+lenovo thinkpad l380 yoga
  * CPU: Intel Core i5-8250U (6 MB Cache, 3.40 GHz) - customized 
  * Hard drive: 256 GB SSD
  * Memory: 8 GB DDR4 2400 MHz SODIMM
