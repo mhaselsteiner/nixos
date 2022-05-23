@@ -2,67 +2,83 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./shell.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
+  boot.supportedFilesystems = [ "ntfs" ];
+  boot.loader.grub.device = "/dev/nvme0n1";
+  boot.loader.grub.configurationLimit = 5;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "haselbox"; # Define your hostname.
   networking.networkmanager.enable = true;
+  networking.networkmanager.insertNameservers = [ "8.8.8.8" ]; #dns
   
   powerManagement.enable = true;
-
-
-
-
-  # Select internationalisation properties.
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    consoleKeyMap = "uk";
-    defaultLocale = "en_GB.UTF-8";
-  };
 
   # Set your time zone.
   time.timeZone = "Europe/Vienna";
  # Manual upgrades
   system.autoUpgrade.enable = false; 
 
+#  nix.nixPath =
+#    # Prepend default nixPath values.
+#    options.nix.nixPath.default ++ 
+#    # Append our nixpkgs-overlays.
+#    [ "nixpkgs-overlays=/etc/nixos/overlays-compat/" ]
+#  ;
+
+  nixpkgs.overlays = [
+    (self: super: with self; {
+    python27 = super.python27.override pythonOverrides;
+    python27Packages = super.recurseIntoAttrs (python27.pkgs);
+    python3Packages = super.recurseIntoAttrs (python3.pkgs);
+    python = python27;
+    pythonPackages = python27Packages;
+
+    python3 = super.python3.override pythonOverrides;
+    pythonOverrides = {
+      packageOverrides = python-self: python-super: {
+          windlamp = python-super.buildPythonPackage rec {
+            name = "windlamp-${version}";
+            version = "0.1";
+            src = fetchGit {
+              url = "git@github.com:mhaselsteiner/windlamp.git";
+              rev = "684fef3e12a6c318847f30500b08a493eb5f7cc3";
+            };
+            propagatedBuildInputs = with python-self; [
+	      requests
+              pandas
+            ];
+            prePatch = with python-self; ''
+            '';
+            doCheck = false;
+          };
+          };
+          };
+		
+          })
+	];
+
 
   nixpkgs.config = {
     allowUnfree = true; #allow unfree software like skype
-    firefox = {
-      enableAdobeFlash = true;
-      enableGnomeExtensions = true;
-      enableAdobeReader  = true;
-      enableVLC = true;};
-#    allowBroken = true; 
+    chromium.enableWideVine = true;
 
-    gnome3 = {
+    gnome = {
       gnome-keyring.enable = true;
       at-spi2-core.enable = true;
-      #gnome-user-share.enable = true;
       gvfs.enable = true;
       };
-
-    packageOverrides = super: let self = super.pkgs; in {
-      spotify = super.spotify.overrideAttrs (o: rec {
-        name = "spotify-${version}";
-        version = "1.0.80.480.g51b03ac3-13";
-        src = self.fetchurl {
-          url = "https://repository-origin.spotify.com/pool/non-free/s/spotify-client/spotify-client_${version}_amd64.deb";
-          sha256 = "e32f4816ae79dbfa0c14086e76df3bc83d526402aac1dbba534127fc00fe50ea";
-        };
-      });
-    };
   };
-
 
 
   # List packages installed in system profile. To search by name, run:
@@ -72,42 +88,61 @@
   environment.systemPackages = with pkgs; [
 #system tools
     bash
-    zip
-    unzip
+    cron
+    enchant
     gitAndTools.gitFull
-    wget 
+    gparted # does not work always
+    htop
+    hunspell # Spell checker
+    hunspellDicts.de-at # German (Austria)
+    hunspellDicts.en-gb-ize # Hunspell dictionary for English (United Kingdom, 'ize' ending) from Wordlist
+    intel-gpu-tools # For intel_gpu_top
+    ntfs3g # FUSE-based NTFS driver with full write support
+    nfs-utils # Linux user-space NFS utilities
+    qpdfview # A tabbed document viewer
+    touchegg #Macro binding for touch surfaces
+    unzip # An extraction utility for archives compressed in .zip format
     vim 
-    gparted
-    qpdfview
-    aspellDicts.de # dictionary
-    aspellDicts.en
+    wget 
+    zip
 
 #programs
-    firefox
-    libreoffice
-    inkscape
-    skype
-    spotify
-    jetbrains.pycharm-community
-    sublime3
-    tor
+    arduino # Open-source electronics prototyping platform 
+    chromium # An open source web browser from Google
+    libreoffice # Comprehensive, professional-quality productivity suite (Still/Stable release)
+    inkscape # Vector graphics editor
+    evolution #  Personal information management application that provides integrated mail, calendaring and address book functionality
+    gnome.adwaita-icon-theme
+    gqview # lightweight png viewer
+    hue-cli # cli for philipps hue lamp
+    krita #  A free and open source painting application (pressure sensitive)
+    okular # taking notes on pdf
+    mpv # A media player that supports many video formats (MPlayer and mplayer2 fork)
+    vlc # Cross-platform media player and streaming server
+    ktorrent # KDE integrated BtTorrent client 
+    spotify # Play music from the Spotify music service
+    jetbrains.pycharm-community # PyCharm Community Edition
+    sqlitebrowser # DB Browser for SQLite
+    zoom-us #chattool
 
 #programming: compiler, interpreter, IDEs
-    android-studio
+    #android-studio
     gcc
     netbeans
-    (python35.withPackages(ps: with ps; [numpy toolz jupyter pygame yapf pandas]))
-    adb-sync #to control android devise frome pc via usb (Debuging, Fastboot)
-    adbfs-rootless#	Mount Android phones on Linux with adb, no root required
+    (python3.withPackages(ps: with ps; [numpy pytest matplotlib protobuf seaborn pylint jupyter pygame yapf pandas scikitlearn]))
+    #adb-sync #to control android devise frome pc via usb (Debuging, Fastboot)
+    #adbfs-rootless#	Mount Android phones on Linux with adb, no root required
     #androidsdk should be in adroid studio	
     
   ];
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   programs.bash.enableCompletion = true;
   programs.mtr.enable = true;
   programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
+  programs.steam.enable = true;
 
   # List services that you want to enable:
 
@@ -122,19 +157,42 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  # getting 32bit programs run like 64bit
-  hardware.opengl.driSupport32Bit = true;
+  services.printing.drivers = with pkgs; [ gutenprint gutenprintBin hplipWithPlugin ]; 
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+  hardware.enableAllFirmware = true;
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      vaapiIntel         # LIBVA_DRIVER_NAME=i963 (older but works better for Firefox/Chromium)
+      vaapiVdpau
+      libvdpau-va-gl
+    ];
+  };
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.layout = "us,de";
+  services.xserver.layout = "gb,de";
   services.xserver.xkbOptions = "eurosign:e";
 
   # Enable touchpad support.
   services.xserver.libinput.enable = true;
-
   # Enable the gnome Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome3.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+
+  services.xserver.videoDrivers = [ "intel" "modesetting" ];
+    # Enable cron service
+  services.cron = {
+    enable = true;
+    systemCronJobs = [
+      "1 * * * *      root    ${pkgs.python3Packages.windlamp}/bin/get_bremen_data >> /home/lena/Programming/PycharmProjects/windlamp/get_data.log 2>&1"
+    ];
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.lena = {
@@ -142,7 +200,12 @@
     isNormalUser = true;
     uid = 1000;
   };
-  environment.gnome3.excludePackages = with pkgs.gnome3; [
+  users.extraUsers.sepp = {
+    extraGroups = [ "wheel" "networkmanager"] ;
+    isNormalUser = true;
+    uid = 1001;
+  };
+  environment.gnome.excludePackages = with pkgs.gnome; [
     epiphany
     gnome-music
     gnome-photos
@@ -150,7 +213,7 @@
     accerciser
   ];
 
- 
+ #boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
 
 
 
@@ -158,6 +221,6 @@
   # compatible, in order to avoid breaking some software such as database
   # servers. You should change this only after NixOS release notes say you
   # should.
-  system.stateVersion = "17.09"; # Did you read the comment?
+  system.stateVersion = "18.09"; # Did you read the comment?
 
 }
