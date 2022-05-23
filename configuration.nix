@@ -71,13 +71,11 @@
 
   nixpkgs.config = {
     allowUnfree = true; #allow unfree software like skype
-#    allowBroken = true; 
     chromium.enableWideVine = true;
 
     gnome = {
       gnome-keyring.enable = true;
       at-spi2-core.enable = true;
-      #gnome-user-share.enable = true;
       gvfs.enable = true;
       };
   };
@@ -95,40 +93,36 @@
     gitAndTools.gitFull
     gparted # does not work always
     htop
-    hunspell
-    hunspellDicts.de-at
-    hunspellDicts.en-gb-ize
+    hunspell # Spell checker
+    hunspellDicts.de-at # German (Austria)
+    hunspellDicts.en-gb-ize # Hunspell dictionary for English (United Kingdom, 'ize' ending) from Wordlist
     intel-gpu-tools # For intel_gpu_top
-    ntfs3g
-    nfs-utils
-    qpdfview
+    ntfs3g # FUSE-based NTFS driver with full write support
+    nfs-utils # Linux user-space NFS utilities
+    qpdfview # A tabbed document viewer
     touchegg #Macro binding for touch surfaces
-    unzip
+    unzip # An extraction utility for archives compressed in .zip format
     vim 
     wget 
     zip
 
 #programs
-    arduino 
-    chromium
-    libreoffice
-    inkscape
+    arduino # Open-source electronics prototyping platform 
+    chromium # An open source web browser from Google
+    libreoffice # Comprehensive, professional-quality productivity suite (Still/Stable release)
+    inkscape # Vector graphics editor
     evolution #  Personal information management application that provides integrated mail, calendaring and address book functionality
     gnome.adwaita-icon-theme
     gqview # lightweight png viewer
     hue-cli # cli for philipps hue lamp
     krita #  A free and open source painting application (pressure sensitive)
     okular # taking notes on pdf
-    mpv
-    vlc
-    ktorrent
-    skype
-    spotify
-    jetbrains.pycharm-community
-    slack
-    sublime3
-    sqlitebrowser
-    #torbrowser
+    mpv # A media player that supports many video formats (MPlayer and mplayer2 fork)
+    vlc # Cross-platform media player and streaming server
+    ktorrent # KDE integrated BtTorrent client 
+    spotify # Play music from the Spotify music service
+    jetbrains.pycharm-community # PyCharm Community Edition
+    sqlitebrowser # DB Browser for SQLite
     zoom-us #chattool
 
 #programming: compiler, interpreter, IDEs
