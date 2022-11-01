@@ -45,28 +45,6 @@
     pythonPackages = python27Packages;
 
     python3 = super.python3.override pythonOverrides;
-    pythonOverrides = {
-      packageOverrides = python-self: python-super: {
-          windlamp = python-super.buildPythonPackage rec {
-            name = "windlamp-${version}";
-            version = "0.1";
-            src = fetchGit {
-              url = "git@github.com:mhaselsteiner/windlamp.git";
-              rev = "684fef3e12a6c318847f30500b08a493eb5f7cc3";
-            };
-            propagatedBuildInputs = with python-self; [
-	      requests
-              pandas
-            ];
-            prePatch = with python-self; ''
-            '';
-            doCheck = false;
-          };
-          };
-          };
-		
-          })
-	];
 
 
   nixpkgs.config = {
@@ -186,13 +164,6 @@
   services.xserver.desktopManager.gnome.enable = true;
 
   services.xserver.videoDrivers = [ "intel" "modesetting" ];
-    # Enable cron service
-  services.cron = {
-    enable = true;
-    systemCronJobs = [
-      "1 * * * *      root    ${pkgs.python3Packages.windlamp}/bin/get_bremen_data >> /home/lena/Programming/PycharmProjects/windlamp/get_data.log 2>&1"
-    ];
-  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.lena = {
