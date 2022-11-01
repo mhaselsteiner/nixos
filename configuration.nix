@@ -170,7 +170,7 @@
   environment.gnome.excludePackages = with pkgs.gnome; [
     epiphany
     gnome-music
-    gnome-photos
+    pkgs.gnome-photos
     totem
     accerciser
   ];
