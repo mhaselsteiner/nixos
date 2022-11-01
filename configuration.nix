@@ -36,15 +36,6 @@
 #    [ "nixpkgs-overlays=/etc/nixos/overlays-compat/" ]
 #  ;
 
-  nixpkgs.overlays = [
-    (self: super: with self; {
-    python27 = super.python27.override pythonOverrides;
-    python27Packages = super.recurseIntoAttrs (python27.pkgs);
-    python3Packages = super.recurseIntoAttrs (python3.pkgs);
-    python = python27;
-    pythonPackages = python27Packages;
-
-    python3 = super.python3.override pythonOverrides;
 
 
   nixpkgs.config = {
