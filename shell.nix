@@ -28,7 +28,7 @@
    #console.keyMap = "uk";
    #i18n.defaultLocale = "en_GB.UTF-8";
 
-  programs.bash.enableCompletion = true;
+  programs.bash.completion.enable = true;
 
   # Show git info in bash prompt and display a colorful hostname if using ssh.
   programs.bash.promptInit = ''

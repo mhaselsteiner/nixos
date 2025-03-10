@@ -86,8 +86,7 @@
     libreoffice # Comprehensive, professional-quality productivity suite (Still/Stable release)
     inkscape # Vector graphics editor
     evolution #  Personal information management application that provides integrated mail, calendaring and address book functionality
-    gnome.adwaita-icon-theme
-    gqview # lightweight png viewer
+    pkgs.adwaita-icon-theme
     hue-cli # cli for philipps hue lamp
     krita #  A free and open source painting application (pressure sensitive)
     okular # taking notes on pdf
@@ -113,7 +112,7 @@
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
-  programs.bash.enableCompletion = true;
+  programs.bash.completion.enable = true;
   programs.mtr.enable = true;
   programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
   programs.steam.enable = true;
@@ -137,9 +136,8 @@
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
   hardware.enableAllFirmware = true;
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
     extraPackages = with pkgs; [
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
       vaapiIntel         # LIBVA_DRIVER_NAME=i963 (older but works better for Firefox/Chromium)
@@ -150,16 +148,16 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.layout = "gb,de";
-  services.xserver.xkbOptions = "eurosign:e";
+  services.xserver.xkb.layout = "gb,de";
+  services.xserver.xkb.options = "eurosign:e";
 
   # Enable touchpad support.
-  services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
   # Enable the gnome Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
-  services.xserver.videoDrivers = [ "intel" "modesetting" ];
+  services.xserver.videoDrivers = [ "modesetting" ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.extraUsers.lena = {
@@ -172,12 +170,12 @@
     isNormalUser = true;
     uid = 1001;
   };
-  environment.gnome.excludePackages = with pkgs.gnome; [
-    epiphany
-    gnome-music
+  environment.gnome.excludePackages = [
+    pkgs.epiphany
+    pkgs.gnome-music
     pkgs.gnome-photos
-    totem
-    accerciser
+    pkgs.totem
+    pkgs.accerciser
   ];
 
  #boot.extraModulePackages = [ config.boot.kernelPackages.exfat-nofuse ];
