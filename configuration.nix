@@ -29,6 +29,11 @@
  # Manual upgrades
   system.autoUpgrade.enable = false; 
 
+  nix = {
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
 #  nix.nixPath =
 #    # Prepend default nixPath values.
 #    options.nix.nixPath.default ++ 
