@@ -64,7 +64,7 @@
     bash
     cron
     enchant
-    gitAndTools.gitFull
+    gitFull
     gparted # does not work always
     htop
     hunspell # Spell checker
@@ -89,10 +89,10 @@
     pkgs.adwaita-icon-theme
     hue-cli # cli for philipps hue lamp
     krita #  A free and open source painting application (pressure sensitive)
-    okular # taking notes on pdf
+    kdePackages.okular # taking notes on pdf
     mpv # A media player that supports many video formats (MPlayer and mplayer2 fork)
     vlc # Cross-platform media player and streaming server
-    ktorrent # KDE integrated BtTorrent client 
+    kdePackages.ktorrent # KDE integrated BtTorrent client 
     spotify # Play music from the Spotify music service
     jetbrains.pycharm-community # PyCharm Community Edition
     sqlitebrowser # DB Browser for SQLite
@@ -102,7 +102,7 @@
     #android-studio
     gcc
     netbeans
-    (python3.withPackages(ps: with ps; [numpy pytest matplotlib protobuf seaborn pylint jupyter pygame yapf pandas scikitlearn]))
+    (python3.withPackages(ps: with ps; [numpy pytest matplotlib protobuf seaborn pylint jupyter pygame yapf pandas scikit-learn]))
     #adb-sync #to control android devise frome pc via usb (Debuging, Fastboot)
     #adbfs-rootless#	Mount Android phones on Linux with adb, no root required
     #androidsdk should be in adroid studio	
@@ -140,8 +140,8 @@
     enable = true;
     extraPackages = with pkgs; [
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
-      vaapiIntel         # LIBVA_DRIVER_NAME=i963 (older but works better for Firefox/Chromium)
-      vaapiVdpau
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i963 (older but works better for Firefox/Chromium)
+      libva-vdpau-driver
       libvdpau-va-gl
     ];
   };

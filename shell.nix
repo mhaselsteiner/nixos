@@ -33,7 +33,7 @@
   # Show git info in bash prompt and display a colorful hostname if using ssh.
   programs.bash.promptInit = ''
     export GIT_PS1_SHOWDIRTYSTATE=1
-    source ${pkgs.gitAndTools.gitFull}/share/git/contrib/completion/git-prompt.sh
+    source ${pkgs.gitFull}/share/git/contrib/completion/git-prompt.sh
     __prompt_color="1;32m"
     # Alternate color for hostname if the generated color clashes with prompt color
     __alternate_color="1;33m"
