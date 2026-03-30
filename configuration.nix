@@ -117,6 +117,7 @@
   programs.mtr.enable = true;
   programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
   programs.steam.enable = true;
+  programs.system-config-printer.enable = true;
 
   # List services that you want to enable:
 
@@ -131,7 +132,7 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-  services.printing.drivers = with pkgs; [ gutenprint gutenprintBin hplipWithPlugin ]; 
+  services.printing.drivers = with pkgs; [ gutenprint gutenprintBin hplip hplipWithPlugin ]; 
 
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
