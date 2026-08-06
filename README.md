@@ -19,3 +19,12 @@ lenovo thinkpad l380 yoga
 ### Installing
 
 Acc. to https://nixos.org/nixos/manual/
+
+## Notes
+
+Never change version in nixos config. Should stay version from first install.
+To get system's current version run `nixos-version`
+
+## Finding flakes and packages
+
+To find a package run `nix search nixpkgs <search term> ^`.
