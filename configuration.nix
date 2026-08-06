@@ -75,7 +75,7 @@
     nfs-utils # Linux user-space NFS utilities
     podman # Program for managing pods, containers and container images
     qpdfview # A tabbed document viewer
-    touchegg #Macro binding for touch surfaces
+    touchegg # Macro binding for touch surfaces
     unzip # An extraction utility for archives compressed in .zip format
     vim 
     wget 
