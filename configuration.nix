@@ -74,6 +74,7 @@
     ntfs3g # FUSE-based NTFS driver with full write support
     nfs-utils # Linux user-space NFS utilities
     podman # Program for managing pods, containers and container images
+    podman-compose # Implementation of docker-compose with podman backend
     qpdfview # A tabbed document viewer
     touchegg # Macro binding for touch surfaces
     unzip # An extraction utility for archives compressed in .zip format
