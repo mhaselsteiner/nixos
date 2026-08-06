@@ -73,6 +73,7 @@
     intel-gpu-tools # For intel_gpu_top
     ntfs3g # FUSE-based NTFS driver with full write support
     nfs-utils # Linux user-space NFS utilities
+    podman # Program for managing pods, containers and container images
     qpdfview # A tabbed document viewer
     touchegg #Macro binding for touch surfaces
     unzip # An extraction utility for archives compressed in .zip format
@@ -118,6 +119,12 @@
   programs.gnupg.agent = { enable = true; enableSSHSupport = true; };
   programs.steam.enable = true;
   programs.system-config-printer.enable = true;
+
+  # Enable podman
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
 
   # List services that you want to enable:
 
